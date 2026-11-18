@@ -2,6 +2,18 @@
 
 Servicio HTTP para crear y consultar validaciones. Cada validación se enriquece con información pública de un país, se guarda en **MongoDB** y se acompaña de un evento de auditoría en **DynamoDB Local**. No hay despliegue público: la entrega consiste en el repositorio y las respuestas técnicas solicitadas.
 
+## 0.1. Pruebas en local: 
+
+  - 1 <img width="618" height="141" alt="image" src="https://github.com/user-attachments/assets/120ecc37-a15d-45d6-9d09-d5c58b8be40a" />
+  - 2 npm run smoke <img width="782" height="484" alt="image" src="https://github.com/user-attachments/assets/5b8ffb99-e458-46bf-bfb9-7e35535ab156" />
+  
+ - 3 npm run. build and start 
+<img width="472" height="127" alt="image" src="https://github.com/user-attachments/assets/acb33e77-a68e-4ed7-86c0-b8ec4d6039ad" />
+-  npm run test
+<img width="519" height="281" alt="image" src="https://github.com/user-attachments/assets/ca9fca34-60d1-400c-b9f8-ca50f2e6e000" />
+
+
+ 
 ## 1. Requisitos cubiertos
 
 | Requisito del correo | Implementación |
