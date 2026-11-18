@@ -1,0 +1,65 @@
+{
+  "info": {
+    "_postman_id": "0af053d5-5454-47a9-8ef4-cb38b28e00c0",
+    "name": "AUCO - Validaciones locales",
+    "description": "Importar esta colección en Postman. Ejecutar primero Crear validación, luego Consultar validación. Requiere docker compose up --build -d.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "validationId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "{{baseUrl}}/health" }
+    },
+    {
+      "name": "Crear validación",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Devuelve HTTP 201', function () { pm.response.to.have.status(201); });",
+              "if (pm.response.code === 201) { pm.collectionVariables.set('validationId', pm.response.json().id); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Ana Torres\",\n  \"document\": \"12345678\",\n  \"countryCode\": \"CO\"\n}" },
+        "url": "{{baseUrl}}/validations"
+      }
+    },
+    {
+      "name": "Consultar validación creada",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('Devuelve HTTP 200', function () { pm.response.to.have.status(200); });"]
+          }
+        }
+      ],
+      "request": { "method": "GET", "url": "{{baseUrl}}/validations/{{validationId}}" }
+    },
+    {
+      "name": "POST inválido - 400",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\"name\":\"\",\"document\":\"???\"}" },
+        "url": "{{baseUrl}}/validations"
+      }
+    },
+    {
+      "name": "GET ID inválido - 400",
+      "request": { "method": "GET", "url": "{{baseUrl}}/validations/not-an-id" }
+    }
+  ]
+}

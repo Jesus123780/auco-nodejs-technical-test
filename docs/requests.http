@@ -1,0 +1,37 @@
+### Liveness
+GET http://localhost:3000/health
+
+### Alta válida (el countryCode es opcional; defecto: CO)
+POST http://localhost:3000/validations
+Content-Type: application/json
+
+{
+  "name": "Ana Torres",
+  "document": "12345678",
+  "countryCode": "CO"
+}
+
+### Error: nombre vacío
+POST http://localhost:3000/validations
+Content-Type: application/json
+
+{
+  "name": "",
+  "document": "12345678"
+}
+
+### Error: código de país inexistente
+POST http://localhost:3000/validations
+Content-Type: application/json
+
+{
+  "name": "Ana Torres",
+  "document": "12345678",
+  "countryCode": "ZZ"
+}
+
+### Reemplazar este ID con el devuelto por POST
+GET http://localhost:3000/validations/691e1c00aabbccddeeff0011
+
+### ID inválido: 400
+GET http://localhost:3000/validations/no-es-id

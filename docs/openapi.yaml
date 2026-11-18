@@ -1,0 +1,89 @@
+openapi: 3.1.0
+info:
+  title: AUCO - Servicio de validaciones
+  version: 1.0.0
+  description: API de enriquecimiento por país, persistencia en MongoDB y auditoría local.
+servers:
+  - url: http://localhost:3000
+paths:
+  /health:
+    get:
+      summary: Comprobación de proceso (liveness)
+      responses:
+        '200':
+          description: API iniciada
+  /validations:
+    post:
+      summary: Crear validación enriquecida
+      description: No verifica identidad ante ninguna autoridad. La API externa recibe únicamente el código del país.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [name, document]
+              properties:
+                name:
+                  type: string
+                  minLength: 2
+                  maxLength: 120
+                document:
+                  type: string
+                  pattern: '^[A-Za-z0-9-]{4,30}$'
+                countryCode:
+                  type: string
+                  pattern: '^[A-Za-z]{2}$'
+                  default: CO
+            example:
+              name: Ana Torres
+              document: '12345678'
+              countryCode: CO
+      responses:
+        '201':
+          description: Se escribió el registro y su evento de auditoría
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id]
+                properties:
+                  id: { type: string, pattern: '^[a-fA-F0-9]{24}$' }
+        '400': { description: Entradas incorrectas }
+        '422': { description: País inexistente }
+        '502': { description: Error de proveedor externo }
+        '503': { description: Fallo de persistencia o auditoría }
+        '504': { description: Timeout del proveedor }
+  /validations/{id}:
+    get:
+      summary: Leer validación guardada
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, pattern: '^[a-fA-F0-9]{24}$' }
+      responses:
+        '200':
+          description: Registro encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, name, document, country, createdAt]
+                properties:
+                  id: { type: string }
+                  name: { type: string }
+                  document: { type: string }
+                  createdAt: { type: string, format: date-time }
+                  country:
+                    type: object
+                    required: [code, name, capital, currencyCode]
+                    properties:
+                      code: { type: string }
+                      name: { type: string }
+                      capital: { type: [string, 'null'] }
+                      currencyCode: { type: [string, 'null'] }
+        '400': { description: ID mal formado }
+        '404': { description: ID válido, sin registro }
+        '503': { description: MongoDB no disponible }
