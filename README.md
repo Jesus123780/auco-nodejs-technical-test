@@ -269,18 +269,6 @@ npm start
 - **No ves el evento auditado**: usa `npm run smoke` con las bases levantadas; el script verifica la tabla con `QueryCommand`. También revisa `docker compose logs api`.
 - **Instalación de npm falla**: utiliza Node 22+, verifica conexión al registro de npm e inténtalo otra vez. La primera instalación crea `package-lock.json`; consérvalo y súbelo al repositorio para fijar versiones una vez generado.
 
-## 11. Entrega a AUCO
-
-No se pide despliegue público ni URL hospedada. Para enviar:
-
-1. Verifica compilación, tests y smoke en tu máquina.
-2. Revisa [decisiones técnicas](docs/DECISIONES_TECNICAS.md) y las [respuestas del formulario](docs/RESPUESTAS_FORMULARIO.md). **Personaliza la respuesta sobre IA de acuerdo con tu trabajo y verificación real**.
-3. Sube el proyecto a un repositorio al que AUCO pueda acceder (`.env` y `node_modules` deben quedar excluidos).
-4. Entrega enlace y las tres respuestas en el [formulario de AUCO](https://forms.gle/Chjg4E3fDUsafgnS8) **hasta el sábado 21 de noviembre de 2026 a las 12:00 del mediodía, hora de Colombia**.
-
-También incluye una colección lista para importar en Postman: [docs/AUCO.postman_collection.json](docs/AUCO.postman_collection.json), un workflow de CI para GitHub Actions y [estado real de verificación](docs/VERIFICACION_REALIZADA.md).
-
-Otros anexos: [contrato OpenAPI](docs/openapi.yaml), [peticiones HTTP](docs/requests.http), [matriz de escenarios](docs/MATRIZ_DE_ESCENARIOS.md), [checklist](docs/ENTREGA_CHECKLIST.md).
 
 ## Referencias técnicas
 
